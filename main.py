@@ -51,7 +51,7 @@ async def query_resume(request: QueryRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 # Optional: Health check endpoint
-@app.get("/health")
+@app.get("/")
 async def health_check():
     return {"status": "healthy"}
 
