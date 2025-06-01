@@ -8,6 +8,7 @@ import uvicorn
 from dotenv import load_dotenv, find_dotenv
 from llama_index.core import Settings
 from llama_index.llms.gemini import Gemini
+import json
 
 load_dotenv(find_dotenv())
 settings = get_settings()
@@ -58,6 +59,19 @@ async def query_resume(request: QueryRequest):
         return {"query": request.query, "message": response}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# Feedback endpoint
+@app.post("/feedback/")
+async def receive_feedback(feedback_data: dict):
+    """
+    Endpoint to receive feedback and print the payload.
+
+    :param feedback_data: The feedback data as a JSON object.
+    :return: A confirmation message.
+    """
+    print("Received feedback payload:")
+    print(json.dumps(feedback_data, indent=4))
+    return {"message": "Feedback received successfully"}
 
 # Optional: Health check endpoint
 @app.get("/")
