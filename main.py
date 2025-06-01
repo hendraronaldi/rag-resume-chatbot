@@ -1,3 +1,4 @@
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from app.agent import ResumeRAGAgent
@@ -31,6 +32,14 @@ app = FastAPI(
     description="AI-powered API to query personal resume using Persistent RAG"
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Request model
 class QueryRequest(BaseModel):
     query: str
@@ -46,7 +55,7 @@ async def query_resume(request: QueryRequest):
     """
     try:
         response = rag_agent.query_resume(request.query)
-        return {"query": request.query, "response": response}
+        return {"query": request.query, "message": response}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
