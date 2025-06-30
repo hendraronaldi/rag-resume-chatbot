@@ -2,3 +2,6 @@
 .python-version
 *__pycache__
 .vercel
+*.development
+*new_index
+cloudbuild.yaml
