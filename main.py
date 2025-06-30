@@ -15,7 +15,7 @@ settings = get_settings()
 Settings.llm = Gemini(
     model=settings.LLM,
     temperature=0,
-    api_key=settings.GEMINI_API_KEY
+    api_key=settings.GOOGLE_API_KEY
 )
 
 # Check if index exists, if not, provide guidance
@@ -81,5 +81,5 @@ async def health_check():
 # Run with: uvicorn main:app --reload
 if __name__ == "__main__":
     uvicorn.run(
-        "main:app", host="0.0.0.0", port=8000, reload=True 
+        "main:app", host="0.0.0.0"
     )
