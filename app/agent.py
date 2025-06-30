@@ -1,18 +1,17 @@
 from llama_index.core import load_index_from_storage
 from llama_index.core.tools import QueryEngineTool
 from llama_index.core.agent import ReActAgent
+from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 from llama_index.llms.gemini import Gemini
-from llama_index.embeddings.google import GeminiEmbedding
 from llama_index.core.storage.storage_context import StorageContext
 from llama_index.core.prompts import PromptTemplate
 from app.config import Settings
 
 class ResumeRAGAgent:
     def __init__(self, settings: Settings):
-        # Initialize Gemini LLM
         self.llm = Gemini(
             model=settings.LLM, 
-            api_key=settings.GEMINI_API_KEY,
+            api_key=settings.GOOGLE_API_KEY,
             temperature=0,
             max_tokens=2**18
         )
@@ -21,9 +20,9 @@ class ResumeRAGAgent:
         storage_context = StorageContext.from_defaults(persist_dir=settings.INDEX_PATH)
         index = load_index_from_storage(
             storage_context, 
-            embed_model=GeminiEmbedding(
+            embed_model=GoogleGenAIEmbedding(
                 model=settings.EMBEDDING_MODEL, 
-                api_key=settings.GEMINI_API_KEY
+                api_key=settings.GOOGLE_API_KEY
             )
         )
         
