@@ -26,7 +26,7 @@ This is an AI-powered API that allows you to query a personal resume using Persi
     Create a `.env` file in the root directory with the following variables:
 
     ```env
-    GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
+    GOOGLE_API_KEY="YOUR_GEMINI_API_KEY"
     LLM="gemini-1.5-flash-latest" # Or your preferred Gemini model
     EMBEDDING_MODEL="publishers/google/models/text-embedding-004"
     ```
