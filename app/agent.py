@@ -73,4 +73,4 @@ class ResumeRAGAgent:
             response = self.agent.chat(query)
             return str(response)
         except Exception as e:
-            return f"Error processing query: {str(e)}"
+            raise e

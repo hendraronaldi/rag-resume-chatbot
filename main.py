@@ -9,6 +9,7 @@ from dotenv import load_dotenv, find_dotenv
 from llama_index.core import Settings
 from llama_index.llms.gemini import Gemini
 import json
+import grpc
 
 load_dotenv(find_dotenv())
 settings = get_settings()
@@ -58,7 +59,17 @@ async def query_resume(request: QueryRequest):
         response = rag_agent.query_resume(request.query)
         return {"query": request.query, "message": response}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        if hasattr(e, "response"):
+            if isinstance(e.response, grpc.RpcError):
+                if e.response.code() == grpc.StatusCode.RESOURCE_EXHAUSTED:
+                    print(f"Quota Exceeded Error:")
+                    print(f"  Status Code: {e.response.code().name}") # This gives you "RESOURCE_EXHAUSTED"
+                    print(f"  Details: {e.response.details()}") # This gives you the detailed message
+                    print(f"  More info: {e.response.debug_error_string()}")
+                    raise HTTPException(status_code=429, detail=str(e))
+        else:
+            # Re-raise other exceptions
+            raise HTTPException(status_code=500, detail=str(e))
 
 # Feedback endpoint
 @app.post("/feedback/")
