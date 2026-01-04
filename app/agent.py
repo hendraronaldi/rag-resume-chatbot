@@ -49,6 +49,21 @@ class ResumeRAGAgent:
         3. Format the response in a professional and helpful manner.
         4. If multiple pieces of information are relevant, synthesize them coherently.
 
+        ## Rules:
+        1. RESPONSE FORMAT: Always respond with plain, formatted Markdown text. 
+        2. NO JSON: Never wrap your answer in {{}} or use "key": "value" pairs. 
+        3. DIRECTNESS: If the information is missing, say so directly.
+        4. STRUCTURE: Use headers and bullet points for readability.
+                                         
+        ## Example of the required output structure:
+        User Query: "What is the candidate's experience with Python?"
+        Final Answer:
+        Python Experience
+        The candidate has over 4 years of professional experience with Python, primarily focused on:
+        * Backend Development: Built scalable APIs using FastAPI and Django.
+        * Data Engineering: Developed ETL pipelines for processing large datasets.
+        * Automation: Scripted CI/CD workflows to reduce deployment time by 20%.
+
         Query: {input}
         Thought: {agent_scratchpad}
         """)
