@@ -19,7 +19,10 @@ my work
 ## WORK EXPERIENCE
 - Data & AI Engineer Jan 2024 - Present
 PT Forstok Teknologi Indonesia Indonesia.
-Design, develop, and maintain data pipeline to fulfill feature requirements such as reporting, analytics, and AI applications.
+Took on additional responsibilities in AI-focused projects while continuing software engineering role.
+Optimized the end-to-end reporting system through query optimization and pre-aggregation, reducing load times to under five seconds and
+resolving request timeout issues. Developed data pipelines to support AI agent knowledge bases. Developing an AI agent chatbot using LLM
+and proprietary data to provide knowledgeable responses.
 - Software Engineer Feb 2021 - Present
 PT Forstok Teknologi Indonesia Indonesia.
 Led remote small backend team of 3 members in enhancing backend development on microservices architecture in Go and various database
@@ -36,6 +39,7 @@ Developed chatbots integrated to third-party chat platform based on product requ
 the company's earliest stage.
 
 ## CERTIFICATIONS
+- Certificate of Graduation Job Connector Bootcamp Data Science & Machine Learning Oct 2025
 - Computer Vision Batch 3 by Indonesia AI (PT. Teknologi Artifisial Indonesia) Feb 2024
 - Cognizant Artificial Intelligence Virtual Experience Program by Forage Jul 2023
 - TensorFlow Developer Certificate by TensorFlow Certificate Program Jul 2023
@@ -55,6 +59,10 @@ Design and develop a text matching input to master data for a specific context c
 Lead a small backend development team working in a cross division team to design and develop a new improved item domain system.
 - Machine Learning, Deep Learning Application Projects Jan 2021 - Present
 Collection of self project machine learning / deep learning application
+- Purwapedia Preventing Customer Churn with Machine Learning Prediction Aug 2025 - Sep 2025
+Designed as a final project for the Purwadhika JCDSOL19 program, this project utilizes an XGBoost predictive model and F2-Score
+optimization to identify at-risk customers, demonstrating a potential 79.7% reduction in business costs through targeted retention
+strategies.
 - Coral Life Forms Detection Dec 2023 - Feb 2024.
 Bootcamp Indonesia AI Computer Vision final group project about coral object detection. Working together in a team consist of 10 members
 using given dataset to train and fine-tuned some YOLO variant models to achieve good metrics and brought the result to presentation
