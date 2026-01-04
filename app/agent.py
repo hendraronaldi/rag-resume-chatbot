@@ -5,6 +5,7 @@ from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 from llama_index.llms.gemini import Gemini
 from llama_index.core.storage.storage_context import StorageContext
 from llama_index.core.prompts import PromptTemplate
+from llama_index.core.memory import ChatMemoryBuffer
 from app.config import Settings
 
 class ResumeRAGAgent:
@@ -24,19 +25,6 @@ class ResumeRAGAgent:
                 model=settings.EMBEDDING_MODEL, 
                 api_key=settings.GOOGLE_API_KEY
             )
-        )
-        
-        # Create query engine
-        query_engine = index.as_query_engine(
-            similarity_top_k=3,
-            response_mode="compact"
-        )
-        
-        # Create a tool from the query engine
-        resume_tool = QueryEngineTool.from_defaults(
-            query_engine=query_engine,
-            name="resume_search",
-            description="Useful for searching and retrieving information from the resume"
         )
         
         # Custom prompt template for more structured responses
@@ -67,13 +55,14 @@ class ResumeRAGAgent:
         Query: {input}
         Thought: {agent_scratchpad}
         """)
-        
-        # Create ReAct Agent
-        self.agent = ReActAgent.from_tools(
-            tools=[resume_tool],
-            llm=self.llm,
-            prompt_template=prompt_template,
-            verbose=True
+
+        memory = ChatMemoryBuffer.from_defaults(token_limit=3000)
+
+        self.agent = index.as_chat_engine(
+            chat_mode="context",
+            memory=memory,
+            system_prompt=prompt_template,
+            llm=self.llm
         )
     
     def query_resume(self, query: str) -> str:
@@ -88,4 +77,5 @@ class ResumeRAGAgent:
             response = self.agent.chat(query)
             return str(response)
         except Exception as e:
+            print(f"Error querying resume: {e}")
             raise e
