@@ -7,6 +7,7 @@ from llama_index.core.storage.storage_context import StorageContext
 from llama_index.core.prompts import PromptTemplate
 from llama_index.core.memory import ChatMemoryBuffer
 from app.config import Settings
+from google.genai import types
 
 class ResumeRAGAgent:
     def __init__(self, settings: Settings):
@@ -22,8 +23,11 @@ class ResumeRAGAgent:
         index = load_index_from_storage(
             storage_context, 
             embed_model=GoogleGenAIEmbedding(
-                model=settings.EMBEDDING_MODEL, 
-                api_key=settings.GOOGLE_API_KEY
+                model_name=settings.EMBEDDING_MODEL, 
+                api_key=settings.GOOGLE_API_KEY,
+                embedding_config=types.EmbedContentConfig(
+                    outputDimensionality=settings.EMBEDDING_DIMENSIONS
+                )
             )
         )
         

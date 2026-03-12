@@ -8,7 +8,8 @@ class Settings:
     # Set your Google API key - consider using environment variables
     GOOGLE_API_KEY: Optional[str] = os.getenv('GOOGLE_API_KEY')
     LLM: str = os.getenv('LLM', 'gemini-2.5-flash')
-    EMBEDDING_MODEL: str = os.getenv('EMBEDDING_MODEL', 'text-embedding-004')
+    EMBEDDING_MODEL: str = os.getenv('EMBEDDING_MODEL', 'gemini-embedding-001')
+    EMBEDDING_DIMENSIONS: int = int(os.getenv('EMBEDDING_DIMENSIONS', '768'))
     INDEX_PATH: str = './app/data/index'
     RESUME_PATH: str = './app/data/resume.md'
 

@@ -3,6 +3,7 @@ from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
 from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 from llama_index.core.storage.storage_context import StorageContext
 from app.config import get_settings
+from google.genai import types
 
 def build_and_persist_index():
     settings = get_settings()
@@ -16,8 +17,11 @@ def build_and_persist_index():
 
     # Initialize Gemini Embedding
     embedding = GoogleGenAIEmbedding(
-        model=settings.EMBEDDING_MODEL, 
-        api_key=settings.GOOGLE_API_KEY
+        model_name=settings.EMBEDDING_MODEL, 
+        api_key=settings.GOOGLE_API_KEY,
+        embedding_config=types.EmbedContentConfig(
+            outputDimensionality=settings.EMBEDDING_DIMENSIONS
+        )
     )
 
     # Load resume document
