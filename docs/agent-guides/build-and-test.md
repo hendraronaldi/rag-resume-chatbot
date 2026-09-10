@@ -72,13 +72,13 @@ Runs container with environment variables from `.env` file.
 ### Build Vector Index
 
 ```bash
-python app/rag/builder.py
+python builder.py
 ```
 
-or
+or from this directory:
 
 ```bash
-python builder.py
+make reindex
 ```
 
 Creates vector index from `app/data/resume.md`.
@@ -189,7 +189,8 @@ mypy app/
 | Command | Purpose |
 |---------|---------|
 | `pip install -r requirements.txt` | Install dependencies |
-| `python builder.py` | Build vector index |
+| `make reindex` | Build vector index (live store + deterministic eval index) |
+| `make docker-build` | Reindex, then build the Docker image with a fresh index |
 | `uvicorn main:app --reload` | Run dev server |
 | `docker build -t rag-resume-chatbot .` | Build Docker image |
 | `docker run -p 8000:8000 --env-file .env rag-resume-chatbot` | Run container |

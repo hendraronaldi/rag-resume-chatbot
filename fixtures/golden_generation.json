@@ -1,0 +1,130 @@
+[
+  {
+    "expected_keywords": [
+      "hendra ronaldi"
+    ],
+    "q": "What is the candidate's full name?"
+  },
+  {
+    "expected_keywords": [
+      "bandung"
+    ],
+    "q": "Which city does the candidate live in?"
+  },
+  {
+    "expected_keywords": [
+      "parahyangan"
+    ],
+    "q": "Which university did the candidate graduate from?"
+  },
+  {
+    "expected_keywords": [
+      "3.68"
+    ],
+    "q": "What was the candidate's GPA?"
+  },
+  {
+    "expected_keywords": [
+      "cumlaude"
+    ],
+    "q": "What graduation distinction did the candidate earn?"
+  },
+  {
+    "expected_keywords": [
+      "forstok"
+    ],
+    "q": "Which company does the candidate work for as a Data and AI Engineer?"
+  },
+  {
+    "expected_any": [
+      "feb",
+      "february"
+    ],
+    "expected_keywords": [
+      "2021"
+    ],
+    "q": "When did the candidate start as a Software Engineer at Forstok?"
+  },
+  {
+    "expected_keywords": [
+      "hendraronaldi10@gmail.com"
+    ],
+    "q": "What is the candidate's email address?"
+  },
+  {
+    "expected_keywords": [
+      "hendraronaldi"
+    ],
+    "q": "What is the candidate's GitHub handle?"
+  },
+  {
+    "expected_keywords": [
+      "talkabot"
+    ],
+    "q": "For which company did the candidate develop chatbots in 2018?"
+  },
+  {
+    "expected_keywords": [
+      "wushu"
+    ],
+    "q": "What martial art did the candidate teach and coach to tournament wins?"
+  },
+  {
+    "expected_keywords": [
+      "yolo"
+    ],
+    "q": "Which model family was used in the coral life forms detection project?"
+  },
+  {
+    "expected_keywords": [
+      "unet"
+    ],
+    "q": "Which model was used for the self-driving car object segmentation project?"
+  },
+  {
+    "expected_keywords": [
+      "xgboost"
+    ],
+    "q": "Which model was used for the customer churn prediction project?"
+  },
+  {
+    "expected_keywords": [
+      "79.7"
+    ],
+    "q": "What cost reduction did the churn prediction project demonstrate?"
+  },
+  {
+    "expected_keywords": [
+      "tensorflow"
+    ],
+    "q": "Which developer certificate did the candidate earn in July 2023?"
+  },
+  {
+    "expected_keywords": [
+      "best student"
+    ],
+    "q": "Which award did the candidate receive in February 2024?"
+  },
+  {
+    "expected_keywords": [
+      "async"
+    ],
+    "q": "What kind of processing cut background job time from a day to minutes?"
+  },
+  {
+    "expected_any": [
+      "4",
+      "four"
+    ],
+    "expected_keywords": [
+      "relations"
+    ],
+    "q": "How far did the item schema simplification reduce the number of relations?"
+  },
+  {
+    "expected_keywords": [
+      "random forest"
+    ],
+    "q": "Which model was used in the hotel cancellation prediction project?"
+  }
+]
