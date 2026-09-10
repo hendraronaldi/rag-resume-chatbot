@@ -4,6 +4,7 @@ google-genai==1.21.1
 google-ai-generativelanguage==0.6.15
 google-generativeai==0.8.5
 importlib-metadata==8.5.0
+langfuse==4.15.2
 llama-index==0.12.43
 llama-index-cli==0.4.3
 llama-index-core==0.12.43
@@ -16,3 +17,9 @@ pydantic==2.11.7
 python-dotenv==1.0.1
 uvicorn==0.34.0
 gunicorn==23.0.0
+grpcio==1.83.1
+grpcio-status==1.71.2
+httpx==0.28.1
+protobuf==5.29.6
+pydantic-core==2.33.2
+starlette==0.46.2

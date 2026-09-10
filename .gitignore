@@ -6,3 +6,6 @@
 *new_index
 cloudbuild.yaml
 opencode.json
+.venv/
+.env.example
+traces.jsonl
