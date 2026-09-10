@@ -1,0 +1,12 @@
+.venv/
+activate/
+__pycache__/
+.git/
+.env
+*.env
+tests/
+docs/
+traces.jsonl
+repomix-output.xml
+.eval/
+.sisyphus/

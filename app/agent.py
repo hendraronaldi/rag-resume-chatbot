@@ -1,21 +1,28 @@
+from typing import Optional
+
+from google import genai
 from llama_index.core import load_index_from_storage
 from llama_index.core.tools import QueryEngineTool
 from llama_index.core.agent import ReActAgent
 from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
-from llama_index.llms.gemini import Gemini
 from llama_index.core.storage.storage_context import StorageContext
 from llama_index.core.prompts import PromptTemplate
 from llama_index.core.memory import ChatMemoryBuffer
-from app.config import Settings
 from google.genai import types
 
+from app.config import Settings
+from app.model_pool import ModelPoolLLM
+from staleness import INDEX_BUILD_DATE, build_system_prompt
+
 class ResumeRAGAgent:
-    def __init__(self, settings: Settings):
-        self.llm = Gemini(
-            model=settings.LLM, 
-            api_key=settings.GOOGLE_API_KEY,
-            temperature=0,
-            max_tokens=2**18
+    def __init__(self, settings: Settings, index_build_date: Optional[str] = None):
+        self.index_build_date = index_build_date or INDEX_BUILD_DATE
+        client = genai.Client(api_key=settings.GOOGLE_API_KEY)
+        self.llm = ModelPoolLLM(
+            client=client,
+            model_pool=settings.RAG_LLM_POOL,
+            provider_request_timeout_s=settings.PROVIDER_REQUEST_TIMEOUT_S,
+            default_remaining_budget_s=settings.LLM_REMAINING_BUDGET_S,
         )
         
         # Load the persisted index
@@ -58,7 +65,7 @@ class ResumeRAGAgent:
 
         Query: {input}
         Thought: {agent_scratchpad}
-        """)
+        """ + "\n" + build_system_prompt(self.index_build_date))
 
         memory = ChatMemoryBuffer.from_defaults(token_limit=3000)
 

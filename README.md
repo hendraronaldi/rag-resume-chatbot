@@ -36,8 +36,11 @@ This is an AI-powered API that allows you to query a personal resume using Persi
 4.  **Build the vector index:**
 
     ```bash
-    python app/rag/builder.py
+    make reindex
     ```
+
+    (Runs `python builder.py` for the live store from `app/data/resume.md`,
+    then `python build_index.py` for the deterministic eval index.)
 
 ## Running the Application
 
@@ -68,9 +71,12 @@ Endpoint to query the resume using natural language.
     ```json
     {
       "query": "Your question about the resume",
-      "message": "Relevant information from the resume"
+      "message": "Relevant information from the resume",
+      "index_build_date": "2026-08-01"
     }
     ```
+
+    Error responses carry the build date in the `X-Index-Build-Date` header.
 
 ### `POST /feedback/`
 

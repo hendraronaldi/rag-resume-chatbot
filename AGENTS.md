@@ -26,7 +26,13 @@ The API will be available at `http://127.0.0.1:8000`.
 
 ### Build Vector Index
 ```bash
-python app/rag/builder.py
+python builder.py
+```
+
+Short form (live store plus deterministic eval index):
+
+```bash
+make reindex
 ```
 
 ### Run with Docker
