@@ -47,6 +47,8 @@ class ResumeRAGAgent:
         2. If the information is not found, clearly state that.
         3. Format the response in a professional and helpful manner.
         4. If multiple pieces of information are relevant, synthesize them coherently.
+        5. Answer in at most 100 words. If more detail would help,
+           end with a one-line offer to elaborate.
 
         ## Rules:
         1. RESPONSE FORMAT: Always respond with plain, formatted Markdown text. 

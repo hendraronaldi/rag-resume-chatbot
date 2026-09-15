@@ -243,7 +243,10 @@ def _answer_chat(query: str, history: List[str]) -> str:
                                       MAX_CONTEXT_TOKENS)
     except budget.BudgetExceeded as exc:
         raise _fail(400, str(exc) or "400: context budget exceeded")
-    prompt = ctx["system"] + "\n" + "\n".join(ctx["history"] + [ctx["query"]])
+    prompt = (ctx["system"] + "\nAnswer in at most 100 words. "
+              "If more detail would help, end with a one-line offer "
+              "to elaborate.\n"
+              + "\n".join(ctx["history"] + [ctx["query"]]))
     return str(Settings.llm.complete(
         prompt, remaining_budget_s=settings.LLM_REMAINING_BUDGET_S))
 
