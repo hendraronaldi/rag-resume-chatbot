@@ -81,6 +81,11 @@ def _stub_heavy_imports() -> None:
                 pass
 
         pool_mod.ModelPoolLLM = FakeModelPoolLLM
+    if not hasattr(pool_mod, "ModelPoolExhaustedError"):
+        class FakeExhausted(RuntimeError):
+            pass
+
+        pool_mod.ModelPoolExhaustedError = FakeExhausted
     if not hasattr(pool_mod, "ROUTING_MODEL_POOL"):
         pool_mod.ROUTING_MODEL_POOL = (
             "gemini-3.1-flash-lite",

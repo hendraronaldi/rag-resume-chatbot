@@ -21,7 +21,7 @@ import staleness
 import tracing
 from app.agent import ResumeRAGAgent
 from app.config import get_settings
-from app.model_pool import ModelPoolLLM
+from app.model_pool import ModelPoolExhaustedError, ModelPoolLLM
 
 load_dotenv(find_dotenv())
 settings = get_settings()
@@ -87,6 +87,11 @@ OUT_OF_SCOPE_REPLY = (
     "skills, experience, and projects from the knowledge base, "
     "I can chat briefly, and I can point you to the Contact section "
     "to get in touch."
+)
+
+BUSY_REPLY = (
+    "I'm experiencing high demand right now, so I can't answer "
+    "at the moment. Please try again shortly."
 )
 
 MAX_HISTORY_MESSAGES = 20
@@ -160,8 +165,7 @@ def _rag_llm_model() -> Optional[str]:
 def _degraded_reply(query: str, rec: tracing.Recorder, intent: str,
                     user_id: str = "", session_id: str = "") -> JSONResponse:
     note = ("I stopped early to respect the loop/time limit instead of "
-            "running on; my knowledge base was last updated on "
-            + INDEX_BUILD_DATE + ". Please try a narrower question.")
+            "running on. Please try a narrower question.")
     return _reply(query, note, rec, intent, user_id, session_id)
 
 
@@ -415,6 +419,13 @@ async def query_resume(request: QueryRequest, http_request: Request):
         raise
     except router.Unroutable as e:
         raise _fail(400, str(e) or "400: query is unroutable")
+    except ModelPoolExhaustedError:
+        t0 = time.perf_counter()
+        rec.span("generation", tokens=_count(request.query),
+                 latency_ms=_elapsed_ms(t0), input=request.query,
+                 output="DEGRADED", model=_rag_llm_model())
+        return _reply(request.query, BUSY_REPLY, rec, intent,
+                      user_id, session_id)
     except Exception as e:
         if hasattr(e, "response"):
             if isinstance(e.response, grpc.RpcError):
@@ -425,10 +436,9 @@ async def query_resume(request: QueryRequest, http_request: Request):
                     print(f"  More info: {e.response.debug_error_string()}")
                     raise HTTPException(status_code=429, detail=str(e),
                                         headers={"X-Index-Build-Date": INDEX_BUILD_DATE})
-        else:
-            # Re-raise other exceptions
-            raise HTTPException(status_code=500, detail=str(e),
-                                headers={"X-Index-Build-Date": INDEX_BUILD_DATE})
+        # Anything else fails closed with a 500: never resolve empty.
+        raise HTTPException(status_code=500, detail=str(e),
+                            headers={"X-Index-Build-Date": INDEX_BUILD_DATE})
 
 # Feedback endpoint
 @app.post("/feedback/")

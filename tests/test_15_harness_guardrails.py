@@ -179,7 +179,7 @@ def test_stagnation_returns_degraded_200(client):
     body = resp.json()
     _contract_ok(body, RAG_QUERY, "RAG")
     assert "loop" in body["message"] or "time limit" in body["message"]
-    assert main.INDEX_BUILD_DATE in body["message"]
+    assert main.INDEX_BUILD_DATE not in body["message"]
     assert FakeRAGAgent.calls == []
     assert fake_llm.prompts == []
 
@@ -201,5 +201,5 @@ def test_time_budget_exceeded_returns_degraded_200(client, monkeypatch):
     body = resp.json()
     _contract_ok(body, RAG_QUERY, "RAG")
     assert "loop" in body["message"] or "time limit" in body["message"]
-    assert main.INDEX_BUILD_DATE in body["message"]
+    assert main.INDEX_BUILD_DATE not in body["message"]
     assert FakeRAGAgent.calls == []
