@@ -326,3 +326,27 @@ def test_adapter_last_used_model_reports_fallback_winner():
 
     llm.complete("hello", remaining_budget_s=5.0)
     assert llm.last_used_model == "gemini-3.5-flash-lite"
+
+
+def test_unavailable_advances_to_next_model():
+    overloaded = api_error(503, "UNAVAILABLE")
+    client = FakeClient([overloaded, "done"])
+    controller = ModelPoolController(client, ROUTING_MODEL_POOL, 10.0)
+
+    assert controller.generate("prompt", remaining_budget_s=5.0) == "done"
+    assert [call["model"] for call in client.models.calls] == list(
+        ROUTING_MODEL_POOL
+    )
+
+
+def test_all_unavailable_exhausts_after_every_model():
+    terminal = api_error(503, "UNAVAILABLE")
+    pool = ROUTING_MODEL_POOL[:2]
+    client = FakeClient([terminal, terminal])
+    controller = ModelPoolController(client, pool, 1.0)
+
+    with pytest.raises(ModelPoolExhaustedError) as caught:
+        controller.generate("prompt", remaining_budget_s=5.0)
+
+    assert caught.value.attempted_models == pool
+    assert caught.value.terminal_error is terminal

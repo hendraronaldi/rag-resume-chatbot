@@ -42,8 +42,10 @@ CHAT_MODEL_POOL = (
     "gemini-3-flash-preview",
 )
 
-_RETRYABLE_API_CODES = frozenset((408, 429, 504))
-_RETRYABLE_API_STATUSES = frozenset(("DEADLINE_EXCEEDED", "RESOURCE_EXHAUSTED"))
+_RETRYABLE_API_CODES = frozenset((408, 429, 503, 504))
+_RETRYABLE_API_STATUSES = frozenset(
+    ("DEADLINE_EXCEEDED", "RESOURCE_EXHAUSTED", "UNAVAILABLE")
+)
 _STREAMING_ERROR = "Streaming is not supported by ModelPoolLLM"
 
 
