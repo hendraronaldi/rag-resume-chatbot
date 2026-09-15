@@ -282,7 +282,8 @@ async def query_resume(request: QueryRequest, http_request: Request):
         if intent == router.RAG:
             system = staleness.build_system_prompt(INDEX_BUILD_DATE)
             try:
-                chunk_ids = retrieval.retrieve(request.query, k=3)
+                chunk_ids = retrieval.retrieve(
+                    request.query, k=3, history=history)
             except Exception:
                 chunk_ids = []
             chunks_for_budget = [

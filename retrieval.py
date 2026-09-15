@@ -25,7 +25,7 @@ import json
 import math
 import os
 import re
-from typing import Any, Dict, List, Set
+from typing import Any, Dict, List, Optional, Set
 
 _WORD = re.compile(r"[a-z0-9+]+")
 
@@ -61,6 +61,8 @@ CHUNKS = {
 }
 
 INDEX_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.json")
+
+MAX_HISTORY_TURNS = 5
 
 
 def tokenize(text: str) -> Set[str]:
@@ -127,9 +129,15 @@ def _load_index() -> Dict[str, Any]:
 _INDEX = _load_index()
 
 
-def retrieve(query: str, k: int = 3) -> List[str]:
+def retrieve(query: str, k: int = 3,
+             history: Optional[List[str]] = None) -> List[str]:
     if k <= 0:
         return []
+    if isinstance(history, list):
+        turns = [m for m in history if isinstance(m, str) and m.strip()]
+        turns = turns[-MAX_HISTORY_TURNS:]
+        if turns:
+            query = "\n".join(turns + [query or ""])
     q_counts = _term_counts(query or "")
     idf = _INDEX["idf"]
     doc_vectors = _INDEX["doc_vectors"]
