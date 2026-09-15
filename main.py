@@ -268,7 +268,7 @@ async def query_resume(request: QueryRequest, http_request: Request):
         route_error = None
         try:
             intent = router.route_with_llm(
-                request.query, routing_llm,
+                request.query, routing_llm, history=history,
                 remaining_budget_s=settings.LLM_REMAINING_BUDGET_S)
         except Exception as exc:
             route_error = exc

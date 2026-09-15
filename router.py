@@ -26,7 +26,7 @@ Deterministic fallback rules (in order):
 
 import json
 import re
-from typing import Any, Optional
+from typing import Any, List, Optional
 
 RAG = "RAG"
 CHAT = "CHAT"
@@ -34,6 +34,7 @@ LEAD_CAPTURE = "LEAD_CAPTURE"
 OTHER = "OTHER"
 
 MAX_QUERY_BYTES = 2000
+MAX_HISTORY_TURNS = 5
 
 _VALID_INTENTS = frozenset((RAG, CHAT, LEAD_CAPTURE, OTHER))
 
@@ -90,6 +91,16 @@ def _parse_llm_intent(raw_text: str) -> Optional[str]:
     return None
 
 
+def _history_block(history: Any) -> str:
+    if not isinstance(history, list):
+        return ""
+    turns = [m for m in history if isinstance(m, str) and m.strip()]
+    turns = turns[-MAX_HISTORY_TURNS:]
+    if not turns:
+        return ""
+    return "Recent conversation:\n" + "\n".join(turns) + "\n"
+
+
 def route(query: str) -> str:
     """Classify a query with the deterministic regex fallback path.
 
@@ -116,12 +127,15 @@ def route(query: str) -> str:
     return RAG
 
 
-def route_with_llm(query: str, llm: Any, **kwargs: Any) -> str:
+def route_with_llm(query: str, llm: Any, history: Optional[List[str]] = None,
+                   **kwargs: Any) -> str:
     """Classify via an LLM pool first, falling back to regex on failure.
 
     Args:
         query: Raw user query string.
         llm: LLM-compatible object exposing complete(prompt, ...).
+        history: Recent conversation turns used only as classifier context
+            so continuations resolve against their antecedent.
         **kwargs: Forwarded to llm.complete (e.g. remaining_budget_s).
 
     Returns:
@@ -131,8 +145,13 @@ def route_with_llm(query: str, llm: Any, **kwargs: Any) -> str:
         Unroutable: If the query is non-string, blank, or oversized.
     """
     route(query)
+    block = _history_block(history)
+    if block:
+        prompt = _ROUTING_PROMPT + block + "Current query: " + query
+    else:
+        prompt = _ROUTING_PROMPT + query
     try:
-        response = llm.complete(_ROUTING_PROMPT + query, **kwargs)
+        response = llm.complete(prompt, **kwargs)
         text = getattr(response, "text", response)
         if not isinstance(text, str):
             text = str(text)
