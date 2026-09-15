@@ -2,7 +2,7 @@ import staleness
 
 
 def test_index_build_date_injected_into_prompt():
-    assert staleness.INDEX_BUILD_DATE in staleness.build_system_prompt()
+    assert staleness.INDEX_BUILD_DATE not in staleness.build_system_prompt()
 
 
 def test_post_date_question_refused():

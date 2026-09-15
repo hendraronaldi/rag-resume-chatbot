@@ -106,4 +106,5 @@ def test_chat_prompt_still_grounds_in_history_and_query(monkeypatch):
                          ["earlier"])
     assert "earlier" in prompt
     assert "Hello! Who am I chatting with?" in prompt
-    assert main.INDEX_BUILD_DATE in prompt
+    assert main.INDEX_BUILD_DATE not in prompt
+    assert "last updated" not in prompt

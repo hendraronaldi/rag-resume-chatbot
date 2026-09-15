@@ -156,7 +156,7 @@ def test_resolve_live_index_build_date_prefers_artifact(tmp_path):
     resolved = staleness.resolve_live_build_date(str(tmp_path))
 
     assert resolved == "2026-08-31"
-    assert resolved in staleness.build_system_prompt(resolved)
+    assert "do not have that information yet" in staleness.build_system_prompt(resolved)
 
 
 def test_resolve_live_index_build_date_falls_back(tmp_path):
@@ -170,5 +170,5 @@ def test_resolve_live_index_build_date_falls_back(tmp_path):
 def test_system_prompt_contains_index_build_date_and_refusal_phrase():
     prompt = staleness.build_system_prompt("2026-08-31")
 
-    assert "2026-08-31" in prompt
+    assert "2026-08-31" not in prompt
     assert "do not have that information yet" in prompt

@@ -86,18 +86,14 @@ def _coerce_build_date(candidate) -> str:
 
 
 def _refusal_message(effective: str) -> str:
-    """Explicit lack-of-information refusal carrying the build date."""
-    return ("I " + _REFUSAL_PHRASE + "; my knowledge base was "
-            "last updated on " + effective + ".")
+    """Explicit lack-of-information refusal without internal detail."""
+    return "I " + _REFUSAL_PHRASE + "."
 
 
 def build_system_prompt(index_build_date: str = INDEX_BUILD_DATE) -> str:
-    """System prompt with the index build date injected. Never raises."""
-    effective = _coerce_build_date(index_build_date)
+    """System prompt with a date-free lack-of-information rule. Never raises."""
     return (
-        "Your knowledge base was last updated on "
-        + effective
-        + ". If the user asks about events after this date, "
+        "If the user asks about events you do not have information on, "
         "state that you " + _REFUSAL_PHRASE + "."
     )
 
