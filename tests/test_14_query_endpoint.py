@@ -168,6 +168,8 @@ def test_lead_capture_intent_redirects_with_no_calls(client):
     body = resp.json()
     _contract_ok(body, query, "LEAD_CAPTURE")
     assert "Contact" in body["message"]
+    assert "mailto:" in body["message"]
+    assert "linkedin.com" in body["message"]
     assert FakeRAGAgent.calls == []
     assert fake_llm.prompts == []
 

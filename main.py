@@ -77,7 +77,10 @@ class QueryRequest(BaseModel):
 
 LEAD_CAPTURE_REPLY = (
     "Thanks for getting in touch! "
-    "Please reach out through the Contact section below "
+    "You can reach out via "
+    "[email](mailto:hendraronaldi10@gmail.com) or "
+    "[LinkedIn](https://linkedin.com/in/hendra-ronaldi-4a7a1b121), "
+    "or through the Contact section below "
     "and we will get back to you soon."
 )
 
