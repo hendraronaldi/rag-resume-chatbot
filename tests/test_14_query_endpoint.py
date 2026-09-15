@@ -155,7 +155,8 @@ def test_chat_intent_uses_llm_only_with_system_prompt_and_history(client):
     _contract_ok(resp.json(), query, "CHAT")
     assert FakeRAGAgent.calls == []
     assert len(fake_llm.prompts) == 1
-    assert main.INDEX_BUILD_DATE not in fake_llm.prompts[0]
+    assert "Chat briefly" in fake_llm.prompts[0]
+    assert "do not have that information yet" not in fake_llm.prompts[0]
     assert query in fake_llm.prompts[0]
 
 

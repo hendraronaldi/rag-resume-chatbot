@@ -240,14 +240,14 @@ def _reply(query: str, answer: str, rec: tracing.Recorder, intent: str,
 
 
 def _answer_chat(query: str, history: List[str]) -> str:
-    """Answer smalltalk via LLM from system prompt + history only; no retrieval. Budget overflow maps to 400."""
-    system = staleness.build_system_prompt(INDEX_BUILD_DATE)
+    """Answer smalltalk via LLM from a short greeting prompt plus history; no retrieval. Budget overflow maps to 400."""
+    system = "Chat briefly."
     try:
         ctx = budget.assemble_context(system, query, [], history,
                                       MAX_CONTEXT_TOKENS)
     except budget.BudgetExceeded as exc:
         raise _fail(400, str(exc) or "400: context budget exceeded")
-    prompt = (ctx["system"] + "\nAnswer in at most 100 words. "
+    prompt = (ctx["system"] + "\nAnswer in at most 30 words. "
               "If more detail would help, end with a one-line offer "
               "to elaborate.\n"
               + "\n".join(ctx["history"] + [ctx["query"]]))
