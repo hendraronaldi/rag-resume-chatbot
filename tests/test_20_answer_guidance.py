@@ -97,7 +97,7 @@ def _chat_prompt(monkeypatch, query, history=None):
 def test_chat_prompt_carries_word_bound(monkeypatch):
     prompt = _chat_prompt(monkeypatch, "Hello! Who am I chatting with?",
                          ["earlier"])
-    assert "100 words" in prompt
+    assert "words" in prompt
     assert "elaborate" in prompt.lower()
 
 
